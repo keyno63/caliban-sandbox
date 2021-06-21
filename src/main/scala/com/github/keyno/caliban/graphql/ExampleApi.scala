@@ -3,7 +3,7 @@ package com.github.keyno.caliban.graphql
 import caliban.{ GraphQL, RootResolver }
 import caliban.GraphQL.graphQL
 import caliban.schema.Annotations.{ GQLDeprecated, GQLDescription }
-import caliban.schema.Schema.gen
+import caliban.schema.{ GenericSchema, Schema }
 import caliban.wrappers.ApolloTracing.apolloTracing
 import caliban.wrappers.Wrappers.{ maxDepth, maxFields, printSlowQueries, timeout }
 import com.github.keyno.caliban.graphql.data.ExampleData.{ CharacterArgs, CharactersArgs, Role }
@@ -18,7 +18,8 @@ import zio.duration.durationInt
 
 import scala.language.postfixOps
 
-object ExampleApi {
+// GenericSchema がないとスキーマ生成時にエラー
+object ExampleApi extends GenericSchema[ExampleService] {
   case class Queries(
     @GQLDescription("Return all characters from a given origin")
     characters: CharactersArgs => URIO[ExampleService, List[Character]],
@@ -28,10 +29,10 @@ object ExampleApi {
   case class Mutations(deleteCharacter: CharacterArgs => URIO[ExampleService, Boolean])
   case class Subscriptions(characterDeleted: ZStream[ExampleService, Nothing, String])
 
-  implicit val roleSchema           = gen[Role]
-  implicit val characterSchema      = gen[Character]
-  implicit val characterArgsSchema  = gen[CharacterArgs]
-  implicit val charactersArgsSchema = gen[CharactersArgs]
+  implicit val roleSchema: Schema[ExampleService, Role]                     = gen[Role]
+  implicit val characterSchema: Schema[ExampleService, Character]           = gen[Character]
+  implicit val characterArgsSchema: Schema[ExampleService, CharacterArgs]   = gen[CharacterArgs]
+  implicit val charactersArgsSchema: Schema[ExampleService, CharactersArgs] = gen[CharactersArgs]
 
   val api: GraphQL[Console with Clock with ExampleService] =
     graphQL(
