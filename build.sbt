@@ -22,3 +22,6 @@ val calibanLibs = Seq(
   "com.github.ghostdogpr" %% "caliban",
   "com.github.ghostdogpr" %% "caliban-akka-http"
 ).map(_ % calibanVersion)
+
+addCommandAlias("fmt", "all scalafmtSbt scalafmt test:scalafmt")
+addCommandAlias("check", "all scalafmtSbtCheck scalafmtCheck test:scalafmtCheck")

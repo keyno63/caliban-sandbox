@@ -18,3 +18,18 @@ caliban は優れた Scala 用 GraphQL ライブラリです。
 - 改造した部分の動作確認
 - 各種デプロイ方法の確認（local 動作、PaaSデプロイ、CIビルド）
 
+## 事前準備
+
+App を書く前に準備している内容.  
+本質とは関係なく、すべてのプロジェクトに関係するので ここに書くべきではない.  
+けど一旦ここに書いてます.  
+
+### scalafmt
+
+formatter 欲しい. [sbt-scalafmt](https://github.com/scalameta/sbt-scalafmt) を使おう  
+やらなければいけない作業は以下
+- `plugin.sbt` に `sbt-scalafmt` のプラグイン追加
+- `.scalafmt.conf` の設置
+  `sbt-scalafmt` のプラグインバージョンと設定バージョンが違うの地味に罠.
+- sbt コマンドにコマンドにフォーマットのエイリアスコマンドの追加
+  これは無くてもよい。 `sbt scalafmt/scalafmtSbt` を実行すれば同じ
