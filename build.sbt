@@ -6,6 +6,8 @@ version := "0.1"
 
 scalaVersion := "2.13.6"
 
+Compile / herokuAppName := "keyno-scala-sandbox"
+
 run / fork := true
 
 lazy val `caliban-sandbox` = project
